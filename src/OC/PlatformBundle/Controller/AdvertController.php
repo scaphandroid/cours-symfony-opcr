@@ -83,11 +83,13 @@ class AdvertController extends Controller
 		
 		//test du service antispam:
 		
+		/*
 		$antispam = $this->container->get('oc_platform.antispam');
 		$textTest = '...';
 		if ($antispam->isSpam($textTest)){
 			throw new \Exception('Votre message a été détecté comme spam!');
 		}
+		*/
 		
 		//si on envoie un formulaire la requête est en POST :
 		
@@ -112,7 +114,6 @@ class AdvertController extends Controller
 		
 		//même logique que pour le add
 		
-		
 		if ($request->isMethod('POST')) {
 			
 			$request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée');
@@ -123,6 +124,7 @@ class AdvertController extends Controller
 			));
 		}
 		
+		//TODO provisoire
 		$listTest = array(
 			array(
 				'title'   => 'Recherche développpeur Symfony',
@@ -158,6 +160,7 @@ class AdvertController extends Controller
 	
 	public function menuAction($limit){
 		
+		//TODO provisoire
 		$listTest = array(
 			array(
 				'title'   => 'Recherche développpeur Symfony',
