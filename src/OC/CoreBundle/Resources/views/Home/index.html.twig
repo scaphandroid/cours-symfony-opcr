@@ -1,0 +1,26 @@
+{# src/OC/CoreBundle/Resources/views/Home/index.html.twig #}
+
+{% extends "OCCoreBundle::layout.html.twig" %}
+
+{% block title %}
+	Accueil - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+	{% for message in app.session.flashbag.get('notice') %}
+		<div class="alert alert-info">
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	<h2>Page d'accueil du site</h2>
+	
+		<p>Bienvenue !</p>
+	
+	<hr>
+	
+	<h3>Les dernières annonces :</h3>
+	{{ render(controller("OCPlatformBundle:Advert:menu", {'limit': 3})) }}
+	
+{% endblock %}
