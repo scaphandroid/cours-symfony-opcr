@@ -12,35 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdvertController extends Controller
 {
-	
-	//test
-	public function indexTestAction(){
-		
-		$content = $this->get('templating')->render('OCPlatformBundle:Advert:indexTest.html.twig', array('nom' => 'Alexis'));
-		
-		return new Response($content);	
-	}
-	
-	//test
-	public function byeAction(){
-		 
-		$content = $this->get('templating')->render('OCPlatformBundle:Advert:bye.html.twig');
-		
-		return new Response($content);
-	}
-	
-	//test avec plusieurs paramètre
-	public function viewSlugAction($year, $slug, $_format){
-		
-		return new Response("Année :".$year." ,slug : "." ,format :".$_format);
-	}
-	
-	/****
-	*véritable plateforme
-	****/
-	
-	
-	
+
 	public function indexAction($page){
 		
 		//on ne peut pas avoir d'index de page négatif

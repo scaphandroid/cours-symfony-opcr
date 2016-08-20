@@ -2,32 +2,6 @@
 
 ##ATTENTION, PENSER AU PREFIX /PLATFORM CONFIGURE DANS APP/CONFIG/ROUTING.XML
 
-#test
-hello_the_world:
-    path: /hello-world
-    defaults: {_controller: OCPlatformBundle:Advert:indexTest}
-    
-#test
-byebye_the_world:
-    path: /byebye-world
-    defaults: {_controller: OCPlatformBundle:Advert:bye}
-    
-#test
-oc_platform_view_slug:
-    path:    /{year}/{slug}.{_format}
-    defaults:
-        _controller: OCPlatformBundle:Advert:viewSlug
-        _format: html
-    requirements:
-        year: \d{4}
-        _format: html|xml
-
-        
-        
-##
-#véritable plateforme
-##
-
 oc_platform_home:
     path:    /{page}
     defaults:
@@ -43,7 +17,6 @@ oc_platform_view:
     requirements:
         id: \d+
         
-
 oc_platform_add:
     path:    /add
     defaults:
