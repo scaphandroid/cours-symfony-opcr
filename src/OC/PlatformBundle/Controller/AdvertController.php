@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 // use Symfony\Component\HttpFoundation\RedirectResponse; //pour faire des redirections
 
+//les entités :
+use OC\PlatformBundle\Entity\Advert;
+
 class AdvertController extends Controller
 {
 
@@ -73,23 +76,39 @@ class AdvertController extends Controller
 				'date'    => new \Datetime())
 		);
 	
+		//premier test de récupération d'entité
+		
+		//récupérer le repository
+		$repository = $this->getDoctrine()
+			->getManager()
+			->getRepository('OCPlatformBundle:Advert')
+		;
+		
+		$advert = $repository->find($id);
+		
+		if ($advert == null){
+			throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas !");
+		}
+		
 		return $this->render('OCPlatformBundle:Advert:view.html.twig', array(
-			'advert' => $listTest[$id-1]
+			'advert' => $advert
 		));
 				
 	}
 	
 	public function addAction( Request $request){
 		
-		//test du service antispam:
+		//création de l'entité
+		$advert = new Advert();
+		$advert->setTitle('Recherche développeur Symfony');
+		$advert->setAuthor('Alexandre');
+		$advert->setContent("Nous recherchons un développeur Symfony débutant sur Lyon. Blabla..");
 		
-		/*
-		$antispam = $this->container->get('oc_platform.antispam');
-		$textTest = '...';
-		if ($antispam->isSpam($textTest)){
-			throw new \Exception('Votre message a été détecté comme spam!');
-		}
-		*/
+		//on récupère l'EntityManager
+		$em = $this->getDoctrine()->getManager();
+		
+		$em->persist($advert);
+		$em->flush();
 		
 		//si on envoie un formulaire la requête est en POST :
 		
