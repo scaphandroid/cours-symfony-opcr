@@ -8,12 +8,37 @@
 
 {% block ocplatform_body %}
 
+	<div style="float: left; margin-right: 1em;">
+		{# On vérifie qu'une image soit bien associée à l'article #}
+		{% if advert.image is not null %}
+		<img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}" height="60">
+		{% endif %}
+	</div>
+
 	<h2>{{ advert.title }}</h2>
 	<i>Par {{ advert.author }}, le {{ advert.date|date('d/m/Y') }}.</i>
 	
 	<div class="well">
 		{{ advert.content }}
 	</div>
+	
+	{% if not advert.categories.empty %}
+		<p>Cette annonce est parue dans les catégories :
+			{% for categorie in advert.categories %}
+				{{categorie.name}}{% if not loop.last %},{% else %}.{% endif %}
+			{% endfor %}
+		</p>
+	{% endif %}
+	
+	{% if listAdvertSkills|length > 0 %}
+		<div>Compétences demandées :
+			<ul>
+			{% for advertSkill in listAdvertSkills %}
+				<li>{{advertSkill.skill.name}}, niveau : {{advertSkill.level}}</li>
+			{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
 	
 	<p>
 		<a href="{{ path('oc_platform_home') }}" class="btn btn-default">
@@ -28,6 +53,17 @@
 			<i class="glyphicon glyphicon-trash"></i>
 			Supprimer l'annonce
 		</a>
-  </p>
+	</p>
+	
+	<h2>Candidatures pour cette annonce :</h2>
+	
+	{% for application in listApplications %}
+		<div class="well">
+			{{ application.content }}
+			<i>Par {{ application.author}} le {{ application.date|date('d/m/Y')}}</i>
+		</div>
+	{% else %}
+		<p>Pas encore de candidature !</p>
+	{% endfor %}
 	
 {% endblock %}
