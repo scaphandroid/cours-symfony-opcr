@@ -2,6 +2,8 @@
 
 namespace OC\PlatformBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
+
 /**
  * AdvertRepository
  *
@@ -10,4 +12,17 @@ namespace OC\PlatformBundle\Repository;
  */
 class AdvertRepository extends \Doctrine\ORM\EntityRepository
 {
+	
+	public function myFindAll(){
+		
+		$queryBuilder = $this->_em->createQueryBuilder()
+			->select('a')
+			->from($this->_entityName, 'a')
+		;
+		
+		return $queryBuilder->getQuery()->getResult();
+		
+	}
+	
+	
 }
