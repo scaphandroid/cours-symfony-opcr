@@ -3,12 +3,14 @@
 namespace OC\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Advert
  *
  * @ORM\Table(name="oc_advert")
  * @ORM\Entity(repositoryClass="OC\PlatformBundle\Repository\AdvertRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Advert
 {
@@ -68,6 +70,22 @@ class Advert
 	 * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\Application", mappedBy="advert")
 	 */
 	private $applications;
+	
+	/**
+	 * @ORM\Column(name="update_at", type="datetime", nullable=true)
+	 */
+	private $updateAt;
+	
+	/**
+	 * @ORM\Column(name="nb_application", type="integer")
+	 */
+	private $nbApplication = 0;
+	
+	/**
+	 * @Gedmo\Slug(fields={"title"})
+	 * @ORM\Column(name="slug", type="string", length=255, unique=true)
+	 */
+	private $slug;
 	
 	public function __construct()
 	{
@@ -262,4 +280,106 @@ class Advert
     {
         return $this->categories;
     }
+
+    /**
+     * Add application
+     *
+     * @param \OC\PlatformBundle\Entity\Application $application
+     *
+     * @return Advert
+     */
+    public function addApplication(\OC\PlatformBundle\Entity\Application $application)
+    {
+        $this->applications[] = $application;
+		
+		$application->setAdvert($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove application
+     *
+     * @param \OC\PlatformBundle\Entity\Application $application
+     */
+    public function removeApplication(\OC\PlatformBundle\Entity\Application $application)
+    {
+        $this->applications->removeElement($application);
+    }
+
+    /**
+     * Get applications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getApplications()
+    {
+        return $this->applications;
+    }
+
+    /**
+     * Set updateAt
+     *
+     * @param \DateTime $updateAt
+     *
+     * @return Advert
+     */
+    public function setUpdateAt($updateAt)
+    {
+        $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updateAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdateAt()
+    {
+        return $this->updateAt;
+    }
+	
+	/**
+	 * @ORM\PreUpdate
+	 */
+	public function updateDate()
+	{
+		$this->setUpdateAt(new \Datetime());
+	}
+
+    /**
+     * Set nbApplication
+     *
+     * @param \int $nbApplication
+     *
+     * @return Advert
+     */
+    public function setNbApplication(\int $nbApplication)
+    {
+        $this->nbApplication = $nbApplication;
+
+        return $this;
+    }
+
+    /**
+     * Get nbApplication
+     *
+     * @return \int
+     */
+    public function getNbApplication()
+    {
+        return $this->nbApplication;
+    }
+	
+	public function increaseNbApplication()
+	{
+		$this->nbApplication++;
+	}
+	
+	public function decreaseApplication()
+	{
+		$this->nbApplication--;
+	}
 }

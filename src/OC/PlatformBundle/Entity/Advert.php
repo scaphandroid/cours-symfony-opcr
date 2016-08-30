@@ -3,12 +3,14 @@
 namespace OC\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Advert
  *
  * @ORM\Table(name="oc_advert")
  * @ORM\Entity(repositoryClass="OC\PlatformBundle\Repository\AdvertRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Advert
 {
@@ -68,6 +70,22 @@ class Advert
 	 * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\Application", mappedBy="advert")
 	 */
 	private $applications;
+	
+	/**
+	 * @ORM\Column(name="update_at", type="datetime", nullable=true)
+	 */
+	private $updateAt;
+	
+	/**
+	 * @ORM\Column(name="nb_application", type="integer", nullable=true)
+	 */
+	private $nbApplication = 0;
+	
+	/**
+	 * @Gedmo\Slug(fields={"title"})
+	 * @ORM\Column(name="slug2", type="string", length=255)
+	 */
+	private $slug;
 	
 	public function __construct()
 	{
@@ -297,5 +315,95 @@ class Advert
     public function getApplications()
     {
         return $this->applications;
+    }
+
+    /**
+     * Set updateAt
+     *
+     * @param \DateTime $updateAt
+     *
+     * @return Advert
+     */
+    public function setUpdateAt($updateAt)
+    {
+        $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updateAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdateAt()
+    {
+        return $this->updateAt;
+    }
+	
+	/**
+	 * @ORM\PreUpdate
+	 */
+	public function updateDate()
+	{
+		$this->setUpdateAt(new \Datetime());
+	}
+
+    /**
+     * Set nbApplication
+     *
+     * @param \int $nbApplication
+     *
+     * @return Advert
+     */
+    public function setNbApplication(\int $nbApplication)
+    {
+        $this->nbApplication = $nbApplication;
+
+        return $this;
+    }
+
+    /**
+     * Get nbApplication
+     *
+     * @return \int
+     */
+    public function getNbApplication()
+    {
+        return $this->nbApplication;
+    }
+	
+	public function increaseNbApplication()
+	{
+		$this->nbApplication++;
+	}
+	
+	public function decreaseApplication()
+	{
+		$this->nbApplication--;
+	}
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Advert
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }
