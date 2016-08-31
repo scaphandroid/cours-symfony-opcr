@@ -1,9 +1,11 @@
-# src/OC/PlatformBundle/Ressources/config/routing.yml
+# src/OC/CoreBundle/Resources/config/routing.yml
 
-oc_core_homepage:
-    path:     /
-    defaults: { _controller: OCCoreBundle:Home:index }
-    
+oc_core_home:
+    path: /
+    defaults:
+        _controller: OCCoreBundle:Core:index
+
 oc_core_contact:
-    path:     /contact
-    defaults: { _controller: OCCoreBundle:Home:contact }
+    path: /contact
+    defaults:
+        _controller: OCCoreBundle:Core:contact
