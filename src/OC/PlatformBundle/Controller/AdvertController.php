@@ -22,18 +22,26 @@ class AdvertController extends Controller
 	public function indexAction($page){
 		
 		//on ne peut pas avoir d'index de page négatif
-		if ($page < 1 ){
+		
+		$advertsPerPage = 2 ;
+		
+		$em = $this->getDoctrine()->getManager();
+		
+		$listAdverts = $em->getRepository("OCPlatformBundle:Advert")->getAdverts($page, $advertsPerPage);
+		
+		$countTotalAdverts = count($listAdverts);
+		$totalPages = $countTotalAdverts / $advertsPerPage;
+		
+		if ($page < 1 || $page > $totalPages ){
 			
 			//cette exception affiche une page 404 que l'on pourra personnaliser par la suite
 			throw new NotFoundHttpException('Page "'.$page.'" inexistante !');		
 		}
 		
-		$em = $this->getDoctrine()->getManager();
-		
-		$listAdverts = $em->getRepository("OCPlatformBundle:Advert")->myFindAll();
-		
 		return $this->render('OCPlatformBundle:Advert:index.html.twig', array(
-			'listAdverts' => $listAdverts
+			'listAdverts' => $listAdverts,
+			'totalPages' => $totalPages,
+			'currentPage' => $page
 		));
 	}
 	
